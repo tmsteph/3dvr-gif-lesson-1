@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GIF English</title>
+  <title>GIF English - Immersive App</title>
   <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f5f5f5;
-      color: #333;
       margin: 0;
       padding: 0;
     }
@@ -22,183 +21,228 @@
     nav {
       display: flex;
       justify-content: space-around;
-      background: #f5f5f5;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
     }
     nav button {
       flex: 1;
       padding: 1rem;
       border: none;
-      background: #f5f5f5;
-      font-weight: bold;
+      background: white;
       cursor: pointer;
+      font-weight: bold;
     }
     nav button.active {
-      background: white;
       border-bottom: 3px solid #D32F2F;
+      color: #D32F2F;
     }
     section {
-      padding: 1rem;
       display: none;
+      padding: 1rem;
     }
     section.active {
       display: block;
     }
-    .card {
+    .card, .lesson-box, .game-box, .chat-box {
       background: white;
-      padding: 1.5rem;
+      padding: 1rem;
       margin: 1rem auto;
-      max-width: 400px;
-      text-align: center;
+      max-width: 600px;
+      border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      border-left: 5px solid #D32F2F;
     }
-    .card button {
-      margin: 0.5rem;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
+    button {
+      margin: 0.3rem;
+      padding: 0.6rem 1rem;
       border: none;
+      border-radius: 5px;
       background: #D32F2F;
       color: white;
-      border-radius: 5px;
       cursor: pointer;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin: 0.5rem 0;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .tile {
+      padding: 1rem;
+      background: #f0f0f0;
+      cursor: pointer;
+      border-radius: 5px;
+      width: 120px;
+      text-align: center;
     }
     textarea {
       width: 100%;
       height: 100px;
-      margin-top: 1rem;
       padding: 0.5rem;
-      font-size: 1rem;
+      margin-top: 1rem;
       border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .lesson-box {
-      background: white;
-      padding: 1rem;
       border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      max-width: 600px;
-      margin: auto;
-    }
-    .lesson-box h2 {
-      color: #D32F2F;
-    }
-    ul {
-      padding-left: 1.2rem;
-    }
-    #submitNotes {
-      margin-top: 0.5rem;
-      background: #D32F2F;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>GIF English</h1>
-    <p>Learn English step-by-step 🇼🇹 ➔ 🇺🇸</p>
-  </header>
 
-  <nav>
-    <button class="tab-btn active" onclick="showTab('flashcards')">Flashcards</button>
-    <button class="tab-btn" onclick="showTab('lesson')">Lesson 1</button>
-    <button class="tab-btn" onclick="showTab('notes')">Shared Notes</button>
-  </nav>
+<header>
+  <h1>GIF English</h1>
+  <p>Learn English the fun way 🇬🇹 ➝ 🇺🇸</p>
+</header>
 
-  <section id="flashcards" class="active">
-    <div class="card">
-      <div><b id="front">Hola</b></div>
-      <div id="back" style="display:none; margin-top: 1rem;"><i>Hello</i></div>
-      <button onclick="toggleCard()">Show Answer</button>
-      <button onclick="nextCard()">Next</button>
-    </div>
-  </section>
+<nav>
+  <button class="tab-btn active" onclick="showTab('flashcards')">Flashcards</button>
+  <button class="tab-btn" onclick="showTab('lesson')">Lesson 1</button>
+  <button class="tab-btn" onclick="showTab('chat')">Roleplay</button>
+  <button class="tab-btn" onclick="showTab('game')">Match Game</button>
+  <button class="tab-btn" onclick="showTab('notes')">Notes</button>
+</nav>
 
-  <section id="lesson">
-    <div class="lesson-box">
-      <h2>Lesson 1: Greetings</h2>
-      <p>Learn how to greet others in English. Greetings are essential in daily conversations.</p>
-      <ul>
-        <li><b>Hello</b> – Hola</li>
-        <li><b>Good morning</b> – Buenos días</li>
-        <li><b>Good afternoon</b> – Buenas tardes</li>
-        <li><b>Good evening</b> – Buenas noches (al llegar)</li>
-        <li><b>Good night</b> – Buenas noches (al despedirse)</li>
-        <li><b>How are you?</b> – ¿Cómo estás?</li>
-        <li><b>I'm fine, thank you.</b> – Estoy bien, gracias.</li>
-        <li><b>What's your name?</b> – ¿Cómo te llamas?</li>
-        <li><b>My name is...</b> – Me llamo...</li>
-        <li><b>Nice to meet you.</b> – Mucho gusto.</li>
-      </ul>
-    </div>
-  </section>
+<section id="flashcards" class="active">
+  <div class="card">
+    <h2 id="front">Hola</h2>
+    <p id="back" style="display:none;"><i>Hello</i></p>
+    <button onclick="speak(front.innerText)">🔊 Hear</button>
+    <button onclick="toggleCard()">Show Answer</button>
+    <button onclick="nextCard()">Next</button>
+  </div>
+</section>
 
-  <section id="notes">
-    <h3>Write or view shared notes</h3>
-    <textarea id="sharedNotes" placeholder="Start typing here..."></textarea>
-    <button id="submitNotes">Submit</button>
-  </section>
+<section id="lesson">
+  <div class="lesson-box">
+    <h2>Lesson 1: Greetings</h2>
+    <ul>
+      <li><b>Hello</b> – Hola</li>
+      <li><b>Good morning</b> – Buenos días</li>
+      <li><b>Good night</b> – Buenas noches</li>
+      <li><b>How are you?</b> – ¿Cómo estás?</li>
+    </ul>
+  </div>
+</section>
 
-  <script>
-    function showTab(tabId) {
-      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-      document.getElementById(tabId).classList.add("active");
-      event.target.classList.add("active");
-    }
+<section id="chat">
+  <div class="chat-box">
+    <h2>🗣️ Meet a new friend!</h2>
+    <p><b>EnglishBot:</b> Hi! What’s your name?</p>
+    <input id="response1" placeholder="Type your name..." />
+    <button onclick="continueChat()">Submit</button>
+    <div id="chatResult"></div>
+  </div>
+</section>
 
-    const cards = [
-      { es: "Hola", en: "Hello" },
-      { es: "Buenos días", en: "Good morning" },
-      { es: "Buenas tardes", en: "Good afternoon" },
-      { es: "Buenas noches", en: "Good night" },
-      { es: "¿Cómo estás?", en: "How are you?" },
-      { es: "Estoy bien, gracias", en: "I'm fine, thank you." },
-      { es: "¿Cómo te llamas?", en: "What's your name?" },
-      { es: "Me llamo...", en: "My name is..." },
-      { es: "Mucho gusto", en: "Nice to meet you." },
-      { es: "Gracias", en: "Thank you" },
-      { es: "Por favor", en: "Please" },
-      { es: "Adiós", en: "Goodbye" }
-    ];
-    let current = 0;
-    const front = document.getElementById('front');
-    const back = document.getElementById('back');
+<section id="game">
+  <div class="game-box">
+    <h2>🎮 Match the Words</h2>
+    <div class="grid" id="gameGrid"></div>
+    <p id="matchMessage"></p>
+  </div>
+</section>
 
-    function updateCard() {
-      front.innerText = cards[current].es;
-      back.innerText = cards[current].en;
-      back.style.display = 'none';
-    }
+<section id="notes">
+  <div class="lesson-box">
+    <h2>Shared Notes</h2>
+    <textarea id="sharedNotes" placeholder="Write something..."></textarea>
+    <button onclick="saveNote()">Submit</button>
+  </div>
+</section>
 
-    function nextCard() {
-      current = (current + 1) % cards.length;
-      updateCard();
-    }
+<script>
+  function showTab(tabId) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById(tabId).classList.add("active");
+    event.target.classList.add("active");
+  }
 
-    function toggleCard() {
-      back.style.display = (back.style.display === 'none') ? 'block' : 'none';
-    }
-
+  // Flashcards
+  const cards = [
+    { es: "Hola", en: "Hello" },
+    { es: "Buenos días", en: "Good morning" },
+    { es: "Buenas noches", en: "Good night" },
+    { es: "¿Cómo estás?", en: "How are you?" },
+    { es: "Gracias", en: "Thank you" }
+  ];
+  let current = 0;
+  const front = document.getElementById('front');
+  const back = document.getElementById('back');
+  function updateCard() {
+    front.innerText = cards[current].es;
+    back.innerText = cards[current].en;
+    back.style.display = 'none';
+  }
+  function nextCard() {
+    current = (current + 1) % cards.length;
     updateCard();
+  }
+  function toggleCard() {
+    back.style.display = back.style.display === 'none' ? 'block' : 'none';
+  }
+  function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'es-ES';
+    speechSynthesis.speak(utterance);
+  }
+  updateCard();
 
-    const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
-    const notes = gun.get('gif-english-shared-notes');
-    const textarea = document.getElementById('sharedNotes');
-    const submitBtn = document.getElementById('submitNotes');
+  // Chat
+  function continueChat() {
+    const name = document.getElementById('response1').value;
+    document.getElementById('chatResult').innerHTML = `<p><b>EnglishBot:</b> Nice to meet you, ${name}!</p><p><b>EnglishBot:</b> How are you today?</p>`;
+  }
 
-    notes.on(data => {
-      if (data && data.text !== textarea.value) {
-        textarea.value = data.text;
-      }
+  // Match Game
+  const gameWords = [
+    { en: "Hello", es: "Hola" },
+    { en: "Thank you", es: "Gracias" },
+    { en: "Please", es: "Por favor" },
+    { en: "Goodbye", es: "Adiós" }
+  ];
+  let selections = [];
+  function renderGame() {
+    const shuffled = [...gameWords.flatMap(w => [w.en, w.es])].sort(() => Math.random() - 0.5);
+    const grid = document.getElementById('gameGrid');
+    grid.innerHTML = '';
+    shuffled.forEach(word => {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.textContent = word;
+      tile.onclick = () => selectTile(tile);
+      grid.appendChild(tile);
     });
+  }
+  function selectTile(tile) {
+    tile.style.background = '#ffdede';
+    selections.push(tile.innerText);
+    if (selections.length === 2) {
+      const match = gameWords.find(w => (w.en === selections[0] && w.es === selections[1]) || (w.en === selections[1] && w.es === selections[0]));
+      document.getElementById('matchMessage').innerText = match ? '✅ Correct match!' : '❌ Try again!';
+      setTimeout(() => {
+        renderGame();
+        selections = [];
+      }, 1500);
+    }
+  }
+  renderGame();
 
-    submitBtn.addEventListener('click', () => {
-      notes.put({ text: textarea.value });
-    });
-  </script>
+  // Gun.js Notes
+  const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
+  const notes = gun.get('gif-english-shared-notes');
+  const textarea = document.getElementById('sharedNotes');
+  function saveNote() {
+    notes.put({ text: textarea.value });
+  }
+  notes.on(data => {
+    if (data && data.text !== textarea.value) {
+      textarea.value = data.text;
+    }
+  });
+</script>
 </body>
 </html>
