@@ -127,14 +127,43 @@
   </div>
 </section>
 
+<section id="lesson">
+  <div class="lesson-box">
+    <h2>Lesson 1: Greetings</h2>
+    <ul>
+      <li><b>Hello</b> – Hola</li>
+      <li><b>Good morning</b> – Buenos días</li>
+      <li><b>Good night</b> – Buenas noches</li>
+      <li><b>How are you?</b> – ¿Cómo estás?</li>
+    </ul>
+  </div>
+</section>
+
 <section id="chat">
   <div class="chat-box">
     <h2>🗣️ Conversation Practice</h2>
     <div id="dialogue">
-      <p><b>EnglishBot:</b> Hi! What’s your name?</p>
+      <p id="q0"><b>EnglishBot:</b> Hi! What’s your name?</p>
     </div>
     <input id="chatInput" placeholder="Type your answer..." />
     <button onclick="nextDialogue()">Send</button>
+  </div>
+</section>
+
+<section id="game">
+  <div class="game-box">
+    <h2>🎮 Match the Words</h2>
+    <div class="grid" id="gameGrid"></div>
+    <p id="matchMessage"></p>
+  </div>
+</section>
+
+<section id="notes">
+  <div class="lesson-box">
+    <h2>Shared Notes</h2>
+    <textarea id="sharedNotes" placeholder="Write something..."></textarea>
+    <button onclick="saveNote()">Submit</button>
+    <div id="notesDisplay"></div>
   </div>
 </section>
 <script>
@@ -214,8 +243,10 @@
       botReply.innerHTML = `<b>EnglishBot:</b> ${replyText}`;
       dialogue.appendChild(botReply);
       chatInput.value = "";
-      if (chatStep < script.length) {
+
+      if (chatStep < script.length && !document.getElementById('q' + chatStep)) {
         const nextQ = document.createElement("p");
+        nextQ.id = 'q' + chatStep;
         nextQ.innerHTML = `<b>EnglishBot:</b> ${script[chatStep].q}`;
         dialogue.appendChild(nextQ);
       }
@@ -250,7 +281,10 @@
     tile.style.background = '#ffdede';
     selections.push(tile.innerText);
     if (selections.length === 2) {
-      const match = gameWords.find(w => (w.en === selections[0] && w.es === selections[1]) || (w.en === selections[1] && w.es === selections[0]));
+      const match = gameWords.find(w =>
+        (w.en === selections[0] && w.es === selections[1]) ||
+        (w.en === selections[1] && w.es === selections[0])
+      );
       document.getElementById('matchMessage').innerText = match ? '✅ Correct match!' : '❌ Try again!';
       setTimeout(() => {
         renderGame();
@@ -268,9 +302,7 @@
   const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
   const notes = gun.get('gif-english-notes');
   const textarea = document.getElementById('sharedNotes');
-  const notesSection = document.createElement('div');
-  notesSection.id = 'notesDisplay';
-  textarea.insertAdjacentElement('afterend', notesSection);
+  const notesDisplay = document.getElementById('notesDisplay');
 
   function saveNote() {
     const text = textarea.value.trim();
@@ -290,7 +322,7 @@
     bubble.className = 'chat-bubble';
     bubble.id = id;
     bubble.innerHTML = `${data.text}<small>${data.name} @ ${data.timestamp}</small>`;
-    document.getElementById('notes').appendChild(bubble);
+    notesDisplay.appendChild(bubble);
   });
 </script>
 </body>
