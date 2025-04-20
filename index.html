@@ -43,7 +43,7 @@
     section.active {
       display: block;
     }
-    .card, .lesson-box, .game-box, .chat-box {
+    .card, .lesson-box, .game-box, .chat-box, .quiz-box {
       background: white;
       padding: 1rem;
       margin: 1rem auto;
@@ -60,11 +60,13 @@
       color: white;
       cursor: pointer;
     }
-    input {
+    input, textarea {
       width: 100%;
       padding: 0.5rem;
       font-size: 1rem;
       margin: 0.5rem 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
     .chat-bubble {
       background: #fff;
@@ -92,13 +94,13 @@
       width: 120px;
       text-align: center;
     }
-    textarea {
-      width: 100%;
-      height: 100px;
-      padding: 0.5rem;
+    .score {
+      font-weight: bold;
       margin-top: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      text-align: center;
+    }
+    .quiz-question {
+      margin-bottom: 1rem;
     }
   </style>
 </head>
@@ -110,32 +112,42 @@
 </header>
 
 <nav>
-  <button class="tab-btn active" onclick="showTab('flashcards')">Flashcards</button>
-  <button class="tab-btn" onclick="showTab('lesson')">Lesson 1</button>
+  <button class="tab-btn active" onclick="showTab('lesson')">Lesson 1</button>
+  <button class="tab-btn" onclick="showTab('flashcards')">Flashcards</button>
   <button class="tab-btn" onclick="showTab('chat')">Roleplay</button>
   <button class="tab-btn" onclick="showTab('game')">Match Game</button>
+  <button class="tab-btn" onclick="showTab('quiz')">Quiz</button>
   <button class="tab-btn" onclick="showTab('notes')">Notes</button>
 </nav>
 
-<section id="flashcards" class="active">
-  <div class="card">
-    <h2 id="front">Hola</h2>
-    <p id="back" style="display:none;"><i>Hello</i></p>
-    <button onclick="speak(back.innerText)">🔊 Hear</button>
-    <button onclick="toggleCard()">Show Answer</button>
-    <button onclick="nextCard()">Next</button>
-  </div>
-</section>
-
-<section id="lesson">
+<section id="lesson" class="active">
   <div class="lesson-box">
     <h2>Lesson 1: Greetings</h2>
+    <p>In English, greetings are the foundation of everyday interaction. They help us open conversations and show kindness to others. Mastering greetings is the first step to feeling confident speaking English!</p>
+    <h3>Tips:</h3>
+    <ul>
+      <li>Use <b>Hello</b> or <b>Hi</b> anytime.</li>
+      <li><b>Good morning</b> is used before 12:00 PM.</li>
+      <li><b>Good night</b> is for saying goodbye in the evening.</li>
+      <li>Always smile and make eye contact 😊</li>
+    </ul>
+    <h3>Vocabulary:</h3>
     <ul>
       <li><b>Hello</b> – Hola</li>
       <li><b>Good morning</b> – Buenos días</li>
       <li><b>Good night</b> – Buenas noches</li>
       <li><b>How are you?</b> – ¿Cómo estás?</li>
     </ul>
+  </div>
+</section>
+
+<section id="flashcards">
+  <div class="card">
+    <h2 id="front">Hola</h2>
+    <p id="back" style="display:none;"><i>Hello</i></p>
+    <button onclick="speak(back.innerText)">🔊 Hear</button>
+    <button onclick="toggleCard()">Show Answer</button>
+    <button onclick="nextCard()">Next</button>
   </div>
 </section>
 
@@ -154,7 +166,29 @@
   <div class="game-box">
     <h2>🎮 Match the Words</h2>
     <div class="grid" id="gameGrid"></div>
+    <p class="score" id="matchScore">Score: 0 / 4</p>
     <p id="matchMessage"></p>
+    <button onclick="resetGame()">Reset Game</button>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="quiz-box">
+    <h2>📋 Quiz: Greetings</h2>
+    <div class="quiz-question">
+      <p>1. How do you say “Good morning” in Spanish?</p>
+      <input type="text" id="q1" placeholder="Your answer..." />
+    </div>
+    <div class="quiz-question">
+      <p>2. What’s a polite way to greet someone at night?</p>
+      <input type="text" id="q2" placeholder="Your answer..." />
+    </div>
+    <div class="quiz-question">
+      <p>3. How do you ask “How are you?” in English?</p>
+      <input type="text" id="q3" placeholder="Your answer..." />
+    </div>
+    <button onclick="submitQuiz()">Submit Quiz</button>
+    <div id="quizResult"></div>
   </div>
 </section>
 
@@ -215,7 +249,7 @@
   updateCard();
 
   // ---------------------
-  // Roleplay Conversation
+  // Roleplay Chat Logic
   // ---------------------
   const dialogue = document.getElementById('dialogue');
   const chatInput = document.getElementById('chatInput');
@@ -231,26 +265,24 @@
     const userText = chatInput.value.trim();
     if (!userText) return;
 
-    const bot = script[chatStep];
     const response = document.createElement("p");
     response.innerHTML = `<b>You:</b> ${userText}`;
     dialogue.appendChild(response);
 
-    chatStep++;
-    setTimeout(() => {
-      const botReply = document.createElement("p");
-      let replyText = script[chatStep - 1].next.replace("{input}", userText);
-      botReply.innerHTML = `<b>EnglishBot:</b> ${replyText}`;
-      dialogue.appendChild(botReply);
-      chatInput.value = "";
+    const botReply = document.createElement("p");
+    let replyText = script[chatStep].next.replace("{input}", userText);
+    botReply.innerHTML = `<b>EnglishBot:</b> ${replyText}`;
+    dialogue.appendChild(botReply);
 
-      if (chatStep < script.length && !document.getElementById('q' + chatStep)) {
-        const nextQ = document.createElement("p");
-        nextQ.id = 'q' + chatStep;
-        nextQ.innerHTML = `<b>EnglishBot:</b> ${script[chatStep].q}`;
-        dialogue.appendChild(nextQ);
-      }
-    }, 500);
+    chatStep++;
+    chatInput.value = "";
+
+    if (chatStep < script.length && !document.getElementById('q' + chatStep)) {
+      const nextQ = document.createElement("p");
+      nextQ.id = 'q' + chatStep;
+      nextQ.innerHTML = `<b>EnglishBot:</b> ${script[chatStep].q}`;
+      dialogue.appendChild(nextQ);
+    }
   }
 
   // ---------------------
@@ -263,6 +295,8 @@
     { en: "Goodbye", es: "Adiós" }
   ];
   let selections = [];
+  let matchedPairs = [];
+  const totalPairs = gameWords.length;
 
   function renderGame() {
     const shuffled = [...gameWords.flatMap(w => [w.en, w.es])].sort(() => Math.random() - 0.5);
@@ -275,9 +309,16 @@
       tile.onclick = () => selectTile(tile);
       grid.appendChild(tile);
     });
+    updateMatchScore();
+  }
+
+  function updateMatchScore() {
+    document.getElementById('matchScore').innerText = `Score: ${matchedPairs.length} / ${totalPairs}`;
   }
 
   function selectTile(tile) {
+    if (tile.classList.contains('matched') || selections.includes(tile.innerText)) return;
+
     tile.style.background = '#ffdede';
     selections.push(tile.innerText);
     if (selections.length === 2) {
@@ -285,19 +326,77 @@
         (w.en === selections[0] && w.es === selections[1]) ||
         (w.en === selections[1] && w.es === selections[0])
       );
-      document.getElementById('matchMessage').innerText = match ? '✅ Correct match!' : '❌ Try again!';
-      setTimeout(() => {
-        renderGame();
-        selections = [];
-        document.getElementById('matchMessage').innerText = '';
-      }, 1500);
+
+      if (match) {
+        document.getElementById('matchMessage').innerText = '✅ Correct match!';
+        matchedPairs.push(match.en);
+        setTimeout(() => {
+          const tiles = [...document.querySelectorAll('.tile')];
+          tiles.forEach(t => {
+            if (t.innerText === match.en || t.innerText === match.es) {
+              t.classList.add('matched');
+              t.style.background = '#d3ffd3';
+            }
+          });
+          selections = [];
+          updateMatchScore();
+          if (matchedPairs.length === totalPairs) {
+            document.getElementById('matchMessage').innerText = '🎉 All matched!';
+          }
+        }, 500);
+      } else {
+        document.getElementById('matchMessage').innerText = '❌ Try again!';
+        setTimeout(() => {
+          selections = [];
+          document.querySelectorAll('.tile').forEach(t => {
+            if (!t.classList.contains('matched')) t.style.background = '#f0f0f0';
+          });
+          document.getElementById('matchMessage').innerText = '';
+        }, 1000);
+      }
     }
   }
 
+  function resetGame() {
+    matchedPairs = [];
+    selections = [];
+    renderGame();
+    document.getElementById('matchMessage').innerText = '';
+  }
+
   renderGame();
+</script>
+<script>
+  // ---------------------
+  // Quiz Logic
+  // ---------------------
+  function generateQuizID(score) {
+    const date = new Date().toISOString();
+    const base = score + date + Math.random().toString();
+    return btoa(base).slice(0, 10); // Short hash
+  }
+
+  function submitQuiz() {
+    const a1 = document.getElementById('q1').value.trim().toLowerCase();
+    const a2 = document.getElementById('q2').value.trim().toLowerCase();
+    const a3 = document.getElementById('q3').value.trim().toLowerCase();
+
+    let score = 0;
+    if (a1.includes("buenos días")) score++;
+    if (a2.includes("good night")) score++;
+    if (a3.includes("how are you")) score++;
+
+    const quizID = generateQuizID(score);
+    const result = `
+      <h3>Your Score: ${score}/3</h3>
+      <p>Quiz ID: <code>${quizID}</code></p>
+      <p>📸 You can screenshot this result as proof!</p>
+    `;
+    document.getElementById('quizResult').innerHTML = result;
+  }
 
   // ---------------------
-  // Notes with Bubbles
+  // Notes with Gun.js
   // ---------------------
   const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
   const notes = gun.get('gif-english-notes');
@@ -315,9 +414,7 @@
   }
 
   notes.map().on((data, id) => {
-    if (!data || !data.text) return;
-    if (document.getElementById(id)) return;
-
+    if (!data || !data.text || document.getElementById(id)) return;
     const bubble = document.createElement('div');
     bubble.className = 'chat-bubble';
     bubble.id = id;
