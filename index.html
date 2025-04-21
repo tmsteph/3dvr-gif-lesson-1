@@ -1,86 +1,447 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Brandt's Portfolio</title>
+  <title>GIF English - Aprende Inglés Fácil</title>
+  <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
       margin: 0;
       padding: 0;
-      background: #f4f4f4;
-      color: #333;
     }
     header {
-      background: #222;
+      background: #D32F2F;
       color: white;
-      padding: 1rem;
       text-align: center;
+      padding: 1rem;
     }
     nav {
-      background: #444;
       display: flex;
-      justify-content: center;
-      gap: 2rem;
-      padding: 0.5rem 0;
+      justify-content: space-around;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
     }
-    nav a {
-      color: white;
-      text-decoration: none;
+    nav button {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      background: #f0f0f0;
+      color: #444;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s ease;
+    }
+    nav button.active {
+      background: white;
+      border-bottom: 3px solid #D32F2F;
+      color: #D32F2F;
     }
     section {
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      margin-top: 1rem;
-      border-radius: 8px;
-    }
-    footer {
-      text-align: center;
+      display: none;
       padding: 1rem;
-      background: #222;
-      color: white;
-      margin-top: 2rem;
     }
-    footer a {
-      color: #00c6ff;
-      text-decoration: none;
+    section.active {
+      display: block;
+    }
+    .card, .lesson-box, .game-box, .chat-box, .quiz-box {
+      background: white;
+      padding: 1rem;
+      margin: 1rem auto;
+      max-width: 600px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    button {
+      margin: 0.3rem;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 5px;
+      background: #D32F2F;
+      color: white;
+      cursor: pointer;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .chat-bubble {
+      background: #fff;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 10px;
+      border-left: 4px solid #D32F2F;
+    }
+    .chat-bubble small {
+      display: block;
+      color: #666;
+      margin-top: 0.2rem;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .tile {
+      padding: 1rem;
+      background: #f0f0f0;
+      cursor: pointer;
+      border-radius: 5px;
+      width: 120px;
+      text-align: center;
+    }
+    .score {
+      font-weight: bold;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .quiz-question {
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Brandt W.</h1>
-    <p>Future Developer | Manufacturing Pro | Lifelong Learner</p>
-  </header>
 
-  <nav>
-    <a href="#about">About</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<header>
+  <h1>GIF English</h1>
+  <p>¡Aprende Inglés paso a paso! 🇬🇹 ➝ 🇺🇸</p>
+</header>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>Hi! I'm Brandt. I've spent the last two years working in manufacturing, learning the value of discipline, focus, and working with my hands.</p>
-    <p>Recently, I've decided to make a big shift and dive into the world of software development. I'm currently learning how to code and exploring web development, programming fundamentals, and tech career paths.</p>
-  </section>
+<nav>
+  <button class="tab-btn active" onclick="showTab('lesson')">Lección</button>
+  <button class="tab-btn" onclick="showTab('flashcards')">Tarjetas</button>
+  <button class="tab-btn" onclick="showTab('chat')">Diálogo</button>
+  <button class="tab-btn" onclick="showTab('game')">Juego</button>
+  <button class="tab-btn" onclick="showTab('quiz')">Examen</button>
+  <button class="tab-btn" onclick="showTab('notes')">Notas</button>
+</nav>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <p>Coming soon! As I learn to code, I'll be sharing my projects here. Stay tuned for websites, apps, and tools I'm building as part of my journey.</p>
-  </section>
+<section id="lesson" class="active">
+  <div class="lesson-box">
+    <h2>Lección 1: Saludos</h2>
+    <p>Los saludos son esenciales para comenzar cualquier conversación. En inglés, existen diferentes formas de saludar dependiendo de la hora del día y el contexto.</p>
+    <h3>Consejos:</h3>
+    <ul>
+      <li>Usa <b>Hello</b> o <b>Hi</b> en cualquier momento.</li>
+      <li><b>Good morning</b> se usa antes del mediodía.</li>
+      <li><b>Good night</b> se usa para despedirse en la noche.</li>
+      <li>No olvides sonreír y hacer contacto visual 😊</li>
+    </ul>
+    <h3>Vocabulario:</h3>
+    <ul>
+      <li><b>Hello</b> – Hola</li>
+      <li><b>Good morning</b> – Buenos días</li>
+      <li><b>Good night</b> – Buenas noches</li>
+      <li><b>How are you?</b> – ¿Cómo estás?</li>
+    </ul>
+  </div>
+</section>
 
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <p>Have advice, resources, or want to connect? Reach out to me on <a href="https://www.facebook.com/brandtw1" target="_blank">Facebook</a>.</p>
-  </section>
+<section id="flashcards">
+  <div class="card">
+    <h2 id="front">Hola</h2>
+    <p id="back" style="display:none;"><i>Hello</i></p>
+    <button onclick="speak(back.innerText)">🔊 Escuchar</button>
+    <button onclick="toggleCard()">Mostrar respuesta</button>
+    <button onclick="nextCard()">Siguiente</button>
+  </div>
+</section>
 
-  <footer>
-    <p>Made with curiosity and determination by Brandt W.</p>
-    <p>Site supported by <a href="https://3dvr.tech" target="_blank">3dvr.tech</a></p>
-  </footer>
+<section id="chat">
+  <div class="chat-box">
+    <h2>🗣️ Práctica de conversación</h2>
+    <div id="dialogue">
+      <p id="q0"><b>EnglishBot:</b> Hi! What’s your name?</p>
+    </div>
+    <input id="chatInput" placeholder="Escribe tu respuesta..." />
+    <button onclick="nextDialogue()">Enviar</button>
+  </div>
+</section>
+
+<section id="game">
+  <div class="game-box">
+    <h2>🎮 Juego de Emparejar</h2>
+    <div class="grid" id="gameGrid"></div>
+    <p class="score" id="matchScore">Puntaje: 0 / 4</p>
+    <p id="matchMessage"></p>
+    <button onclick="resetGame()">Reiniciar</button>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="quiz-box">
+    <h2>📋 Examen: Saludos</h2>
+    <div class="quiz-question">
+      <p>1. ¿Cuál es la forma correcta de decir “Buenos días” en inglés?</p>
+      <select id="q1">
+        <option value="">Elige una opción</option>
+        <option value="a">Good night</option>
+        <option value="b">Good morning</option>
+        <option value="c">Hello</option>
+      </select>
+    </div>
+    <div class="quiz-question">
+      <p>2. ¿Cómo saludas a alguien por la noche para despedirte?</p>
+      <select id="q2">
+        <option value="">Elige una opción</option>
+        <option value="a">Goodbye</option>
+        <option value="b">Good night</option>
+        <option value="c">Hi</option>
+      </select>
+    </div>
+    <div class="quiz-question">
+      <p>3. ¿Cómo preguntas “¿Cómo estás?” en inglés?</p>
+      <select id="q3">
+        <option value="">Elige una opción</option>
+        <option value="a">What is your name?</option>
+        <option value="b">How are you?</option>
+        <option value="c">Good evening</option>
+      </select>
+    </div>
+    <button onclick="submitQuiz()">Enviar respuestas</button>
+    <div id="quizResult"></div>
+  </div>
+</section>
+
+<section id="notes">
+  <div class="lesson-box">
+    <h2>Notas compartidas</h2>
+    <input id="noteName" placeholder="Tu nombre..." />
+    <textarea id="sharedNotes" placeholder="Escribe una nota..."></textarea>
+    <button onclick="saveNote()">Enviar</button>
+    <div id="notesDisplay"></div>
+  </div>
+</section>
+  <script>
+  // ---------------------
+  // Tab Navigation
+  // ---------------------
+  function showTab(tabId) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById(tabId).classList.add("active");
+    event.target.classList.add("active");
+  }
+
+  // ---------------------
+  // Flashcards
+  // ---------------------
+  const cards = [
+    { es: "Hola", en: "Hello" },
+    { es: "Buenos días", en: "Good morning" },
+    { es: "Buenas noches", en: "Good night" },
+    { es: "¿Cómo estás?", en: "How are you?" },
+    { es: "Gracias", en: "Thank you" }
+  ];
+  let current = 0;
+  const front = document.getElementById('front');
+  const back = document.getElementById('back');
+
+  function updateCard() {
+    front.innerText = cards[current].es;
+    back.innerText = cards[current].en;
+    back.style.display = 'none';
+  }
+
+  function nextCard() {
+    current = (current + 1) % cards.length;
+    updateCard();
+  }
+
+  function toggleCard() {
+    back.style.display = back.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    speechSynthesis.speak(utterance);
+  }
+
+  updateCard();
+
+  // ---------------------
+  // Roleplay Chat
+  // ---------------------
+  const dialogue = document.getElementById('dialogue');
+  const chatInput = document.getElementById('chatInput');
+  const script = [
+    { q: "Hi! What’s your name?", next: "Nice to meet you, {input}! How are you today?" },
+    { q: "How are you today?", next: "Great! How old are you?" },
+    { q: "How old are you?", next: "Cool! What’s your favorite hobby?" },
+    { q: "What’s your favorite hobby?", next: "Nice! You're doing awesome!" }
+  ];
+  let chatStep = 0;
+
+  function nextDialogue() {
+    const userText = chatInput.value.trim();
+    if (!userText) return;
+
+    const response = document.createElement("p");
+    response.innerHTML = `<b>You:</b> ${userText}`;
+    dialogue.appendChild(response);
+
+    const botReply = document.createElement("p");
+    let replyText = script[chatStep].next.replace("{input}", userText);
+    botReply.innerHTML = `<b>EnglishBot:</b> ${replyText}`;
+    dialogue.appendChild(botReply);
+
+    chatStep++;
+    chatInput.value = "";
+
+    if (chatStep < script.length && !document.getElementById('q' + chatStep)) {
+      const nextQ = document.createElement("p");
+      nextQ.id = 'q' + chatStep;
+      nextQ.innerHTML = `<b>EnglishBot:</b> ${script[chatStep].q}`;
+      dialogue.appendChild(nextQ);
+    }
+  }
+
+  // ---------------------
+  // Match Game
+  // ---------------------
+  const gameWords = [
+    { en: "Hello", es: "Hola" },
+    { en: "Thank you", es: "Gracias" },
+    { en: "Please", es: "Por favor" },
+    { en: "Goodbye", es: "Adiós" }
+  ];
+  let selections = [];
+  let matchedPairs = [];
+  const totalPairs = gameWords.length;
+
+  function renderGame() {
+    const shuffled = [...gameWords.flatMap(w => [w.en, w.es])].sort(() => Math.random() - 0.5);
+    const grid = document.getElementById('gameGrid');
+    grid.innerHTML = '';
+    shuffled.forEach(word => {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.textContent = word;
+      tile.onclick = () => selectTile(tile);
+      grid.appendChild(tile);
+    });
+    updateMatchScore();
+  }
+
+  function updateMatchScore() {
+    document.getElementById('matchScore').innerText = `Puntaje: ${matchedPairs.length} / ${totalPairs}`;
+  }
+
+  function selectTile(tile) {
+    if (tile.classList.contains('matched') || selections.includes(tile.innerText)) return;
+
+    tile.style.background = '#ffdede';
+    selections.push(tile.innerText);
+    if (selections.length === 2) {
+      const match = gameWords.find(w =>
+        (w.en === selections[0] && w.es === selections[1]) ||
+        (w.en === selections[1] && w.es === selections[0])
+      );
+
+      if (match) {
+        document.getElementById('matchMessage').innerText = '✅ ¡Correcto!';
+        matchedPairs.push(match.en);
+        setTimeout(() => {
+          const tiles = [...document.querySelectorAll('.tile')];
+          tiles.forEach(t => {
+            if (t.innerText === match.en || t.innerText === match.es) {
+              t.classList.add('matched');
+              t.style.background = '#d3ffd3';
+            }
+          });
+          selections = [];
+          updateMatchScore();
+          if (matchedPairs.length === totalPairs) {
+            document.getElementById('matchMessage').innerText = '🎉 ¡Completado!';
+          }
+        }, 500);
+      } else {
+        document.getElementById('matchMessage').innerText = '❌ Intenta de nuevo';
+        setTimeout(() => {
+          selections = [];
+          document.querySelectorAll('.tile').forEach(t => {
+            if (!t.classList.contains('matched')) t.style.background = '#f0f0f0';
+          });
+          document.getElementById('matchMessage').innerText = '';
+        }, 1000);
+      }
+    }
+  }
+
+  function resetGame() {
+    matchedPairs = [];
+    selections = [];
+    renderGame();
+    document.getElementById('matchMessage').innerText = '';
+  }
+
+  renderGame();
+  </script>
+  <script>
+  // ---------------------
+  // Quiz Logic (Multiple Choice)
+  // ---------------------
+  function generateQuizID(score) {
+    const base = `${score}-${Date.now()}-${Math.random()}`;
+    return btoa(base).slice(0, 10); // Short unique ID
+  }
+
+  function submitQuiz() {
+    const a1 = document.getElementById('q1').value;
+    const a2 = document.getElementById('q2').value;
+    const a3 = document.getElementById('q3').value;
+
+    let score = 0;
+    if (a1 === "b") score++;
+    if (a2 === "b") score++;
+    if (a3 === "b") score++;
+
+    const quizID = generateQuizID(score);
+    document.getElementById('quizResult').innerHTML = `
+      <h3>Tu Puntaje: ${score}/3</h3>
+      <p><strong>ID del Examen:</strong> <code>${quizID}</code></p>
+      <p>📸 Toma una captura de pantalla para guardar tu resultado.</p>
+    `;
+  }
+
+  // ---------------------
+  // Shared Notes (with Name Input)
+  // ---------------------
+  const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
+  const notes = gun.get('gif-english-notes');
+  const textarea = document.getElementById('sharedNotes');
+  const nameField = document.getElementById('noteName');
+  const notesDisplay = document.getElementById('notesDisplay');
+
+  function saveNote() {
+    const text = textarea.value.trim();
+    const name = nameField.value.trim() || "Anónimo";
+    if (!text) return;
+
+    const timestamp = new Date().toLocaleString();
+    const note = { name, text, timestamp };
+    notes.set(note);
+    textarea.value = '';
+  }
+
+  notes.map().on((data, id) => {
+    if (!data || !data.text || document.getElementById(id)) return;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble';
+    bubble.id = id;
+    bubble.innerHTML = `${data.text}<small>${data.name} @ ${data.timestamp}</small>`;
+    notesDisplay.appendChild(bubble);
+  });
+</script>
 </body>
 </html>
+  
